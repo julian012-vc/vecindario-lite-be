@@ -32,6 +32,7 @@ group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   # Use to environment variables
   gem 'dotenv-rails'
+  gem 'solargraph'
 end
 
 group :development do
