@@ -1,14 +1,15 @@
 class Api::V1::UsersController < ApplicationController
     before_action :authorize_request, except: :create
+    before_action :find_user, except: %i[create index]
 
-    # POST /users
-    def create
-        @user = User.new(user_params)
+    CUSTOMER = 'C'
+
+    def register_contact
+        @user = User.new(contact_params)
         if @user.save
-        render json: @user, status: :created
+            render json: @user, status: :created
         else
-        render json: { errors: @user.errors.full_messages },
-                status: :unprocessable_entity
+            render json: { errors: @user.errors.messages }, status: :unprocessable_entity
         end
     end
 
@@ -16,6 +17,14 @@ class Api::V1::UsersController < ApplicationController
     def index
         @users = User.all
         render json: @users, status: :ok
+    end
+
+    private
+
+    def contact_params
+        params.permit(
+          :first_name, :last_name, :email, :phone, :type_user
+        )
     end
 
 end
