@@ -17,4 +17,15 @@ class ApplicationController < ActionController::API
         end
     end
     
+    def get_authorize_user
+        header = request.headers['Authorization']
+        token = header.split(' ').last if header
+        begin
+            decoded = JsonWebToken.decode(token)
+            @current_user = User.with_role(:admin).where(:id => decoded[:user_id]).first
+        rescue JWT::DecodeError => e
+            @current_user = nil
+        end
+    end
+
 end
