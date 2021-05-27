@@ -6,13 +6,13 @@ class Api::V1::AuthenticationController < ApplicationController
         if @user and @user&.valid_password?(login_params[:password])
             render json: { token: JsonWebToken.encode(user_id: @user.id) }, status: :ok
         else
-            render json: { error: { email: ['El correo o la contraseña no son correctos'] }}, status: :unauthorized
+            render json: { error: { email: ['El correo o la contraseña no son correctos'] }}, status: :unprocessable_entity
         end
     end 
 
     def create
         if @user
-            render json: { errors: { email: ['El correo ya tiene una cuenta asociada'] }}
+            render json: { errors: { email: ['El correo ya tiene una cuenta asociada'] }}, status: :unprocessable_entity
         else
             new_user = User.new(user_params)
             new_user.add_role :admin
