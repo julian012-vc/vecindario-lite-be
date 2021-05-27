@@ -1,12 +1,9 @@
 class Api::V1::AuthenticationController < ApplicationController
     before_action :authorize_request, except: [:login, :create]
-
-    ADMIN = 'A'
+    before_action :set_user
 
     def login
-        @user = User.find_by(email: login_params[:email], type_user: ADMIN)
-        print login_params
-        if @user&.valid_password?(login_params[:password])
+        if @user and @user&.valid_password?(login_params[:password])
             render json: { token: JsonWebToken.encode(user_id: @user.id) }, status: :ok
         else
             render json: { error: { email: ['El correo o la contraseña no son correctos'] }}, status: :unauthorized
@@ -14,14 +11,15 @@ class Api::V1::AuthenticationController < ApplicationController
     end 
 
     def create
-        if User.where(:email => user_params['email'], :type_user => ADMIN).any?
+        if @user
             render json: { errors: { email: ['El correo ya tiene una cuenta asociada'] }}
         else
-            @user = User.new(user_params)
-            if @user.save
+            new_user = User.new(user_params)
+            new_user.add_role :admin
+            if new_user.save
                 render json: { token: token = JsonWebToken.encode(user_id: @user.id) }, status: :ok
             else
-                render json: { errors: @user.errors.messages }, status: :unprocessable_entity
+                render json: { errors: user.errors.messages }, status: :unprocessable_entity
             end
         end
     end
@@ -33,7 +31,11 @@ class Api::V1::AuthenticationController < ApplicationController
     end
 
     def user_params
-        params.permit(:first_name, :last_name, :email, :password, :password_confirmation, :phone, :type_user)
+        params.permit(:first_name, :last_name, :email, :password, :password_confirmation, :phone)
+    end
+
+    def set_user
+        @user = User.with_role(:admin).where(:email => login_params[:email]).first
     end
 
 end
