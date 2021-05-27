@@ -15,7 +15,8 @@ Rails.application.routes.draw do
       get '/projects/:id', to: 'projects#retrieve'
 
       # Leads
-
+      post '/projects/:project_id/leads', to: 'lead#create'
+      get '/projects/:project_id/leads', to: 'lead#retrieve_project_leads'
       # Reports
     end
   end
