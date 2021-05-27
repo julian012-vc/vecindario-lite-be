@@ -1,6 +1,15 @@
 class Project < ApplicationRecord
 
     belongs_to :user
+    has_many :leads
+    has_many :users_by_leads, through: :lead, source: :user
+    
+    extend FriendlyId 
+
+    friendly_id :generate_project_slug, use: :slugged
+    def generate_project_slug
+        "#{:city}-#{:type_project}-#{:title}"
+    end
 
     validate    :area_validation
 
@@ -15,6 +24,7 @@ class Project < ApplicationRecord
 
     validates   :email,
                 format: { with: URI::MailTo::EMAIL_REGEXP }
+    # TODO Email list
 
     validates   :title,
                 :type_project,
@@ -23,17 +33,14 @@ class Project < ApplicationRecord
                 :price,
                 :private_area,
                 :building_area,
-                :has_vis,
-                :has_parking,
                 :email,
                 :user,
                 presence: true
 
-    # TODO boolean in false error
     validates   :has_vis,
                 :has_parking,
                 inclusion: { 
-                    in: [true, false]
+                    in: [ true, false ]
                 }
 
     validates   :price,

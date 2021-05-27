@@ -1,5 +1,5 @@
 class Api::V1::ProjectsController < ApplicationController
-    before_action :authorize_request, except: [:list, :retrieve]
+    before_action :get_authorize_request, except: [:list, :retrieve]
     
     def create
         @project = Project.new(project_params)
