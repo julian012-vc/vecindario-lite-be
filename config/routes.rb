@@ -8,6 +8,7 @@ Rails.application.routes.draw do
       # Auth
       post '/auth/create', to: 'authentication#create'
       post '/auth/login', to: 'authentication#login'
+      get '/auth/me', to: 'authentication#retrieve'
 
       # Projects
       post '/projects', to: 'projects#create'

@@ -1,5 +1,6 @@
 class Api::V1::AuthenticationController < ApplicationController
     before_action :authorize_request, except: [:login, :create]
+    before_action :get_authorize_user, only: [:retrive]
     before_action :set_user
 
     def login
@@ -22,6 +23,10 @@ class Api::V1::AuthenticationController < ApplicationController
                 render json: { errors: user.errors.messages }, status: :unprocessable_entity
             end
         end
+    end
+
+    def retrieve
+        render json: @current_user, status: :ok
     end
 
     private
