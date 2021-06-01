@@ -27,11 +27,24 @@ gem 'bootsnap', '>= 1.4.4', require: false
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 gem 'rack-cors'
 
+# Flexible authentication solution for Rails
+gem 'devise'
+
+# Additional languages
+gem 'rails-i18n'
+
+# pretty URLs
+gem 'friendly_id', '~> 5.4.0'
+
+# Simple Roles library
+gem "rolify"
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   # Use to environment variables
   gem 'dotenv-rails'
+  gem 'solargraph'
 end
 
 group :development do
