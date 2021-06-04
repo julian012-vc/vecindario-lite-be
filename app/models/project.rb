@@ -8,7 +8,7 @@ class Project < ApplicationRecord
 
     friendly_id :generate_project_slug, use: :slugged
     def generate_project_slug
-        "#{:city}-#{:type_project}-#{:title}"
+        "#{city}-#{type_project}-#{title}"
     end
 
     validate    :area_validation
