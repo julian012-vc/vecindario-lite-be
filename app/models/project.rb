@@ -2,13 +2,13 @@ class Project < ApplicationRecord
 
     belongs_to :user
     has_many :leads
-    has_many :users_by_leads, through: :lead, source: :user
+    has_many :users_by_leads, through: :leads, source: :user
     
     extend FriendlyId 
 
     friendly_id :generate_project_slug, use: :slugged
     def generate_project_slug
-        "#{:city}-#{:type_project}-#{:title}"
+        "#{city}-#{type_project}-#{title}"
     end
 
     validate    :area_validation

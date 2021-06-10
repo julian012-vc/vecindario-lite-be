@@ -12,16 +12,20 @@ class Api::V1::AuthenticationController < ApplicationController
 
     def create
         if @user
-            render json: { errors: { email: ['El correo ya tiene una cuenta asociada'] }}
+            render json: { errors: { email: ['El correo ya tiene una cuenta asociada'] }}, status: :unprocessable_entity
         else
             new_user = User.new(user_params)
             new_user.add_role :admin
             if new_user.save
                 render json: { token: JsonWebToken.encode(user_id: new_user.id) }, status: :ok
             else
-                render json: { errors: new_user.errors.messages }, status: :unprocessable_entity
+                render json: { errors: user.errors.messages }, status: :unprocessable_entity
             end
         end
+    end
+
+    def retrieve
+        render json: @current_user, status: :ok
     end
 
     private

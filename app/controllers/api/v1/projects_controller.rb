@@ -15,6 +15,21 @@ class Api::V1::ProjectsController < ApplicationController
         render json: @project, status: :ok
     end
 
+    def update
+        @project = Project.find(params['id'])
+        @project.attributes = project_params
+        if @project.save
+            render json: @project, status: :accepted
+        else
+            render json: { errors: @project.errors.messages }, status: :unprocessable_entity
+        end
+    end
+
+    def leads
+        @project = Project.find(params['id'])
+        render json: @project.users_by_leads, status: :ok
+    end
+
     # TODO Refactor code
     def list
         query_params = request.query_parameters
