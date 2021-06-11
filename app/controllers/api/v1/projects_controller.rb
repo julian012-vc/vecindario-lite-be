@@ -11,12 +11,12 @@ class Api::V1::ProjectsController < ApplicationController
     end
 
     def retrieve
-        @project = Project.find(params['id'])
+        @project = Project.find_by_slug(params[:id])
         render json: @project, status: :ok
     end
 
     def update
-        @project = Project.find(params['id'])
+        @project = Project.find(params[:id])
         @project.attributes = project_params
         if @project.save
             render json: @project, status: :accepted
@@ -26,8 +26,12 @@ class Api::V1::ProjectsController < ApplicationController
     end
 
     def leads
-        @project = Project.find(params['id'])
-        render json: @project.users_by_leads, status: :ok
+        @project = Project.find_by_slug(params[:id])
+        if @project
+            render json: @project.users_by_leads, status: :ok
+        else
+            render json: { errors: 'Not Found' }, status: :unprocessable_entity
+        end
     end
 
     # TODO Refactor code
