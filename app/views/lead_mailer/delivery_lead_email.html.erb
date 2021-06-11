@@ -1,0 +1,33 @@
+<div class="email__container">
+  <img class="email--logo" src="https://viewinmobiliario2.s3-sa-east-1.amazonaws.com/presente/Auth/creacion-cuenta.png" alt="header" />
+  <table style="width: 100%">
+    <tr>
+      <td style="text-align: center;">
+        <img src="https://viewinmobiliario2.s3-sa-east-1.amazonaws.com/static_assets/emails/assessor_notify/banner-no-registrado.png" />
+      </td>
+    </tr>
+  </table>
+  <h2>
+    Hola Equipo <span class="highligh"> <%= @project.title %> </span>,
+  </h2>
+  <p class="emai__content">
+    <span class="highligh"> <%= @user.first_name %> <%= @user.last_name %> </span>
+    es un usuario Vecindario que inició su proceso de búsqueda y está
+    interesado en tu proyecto, a continuación te compartimos sus datos ya que puede estar
+    visitando a la sala de ventas en los próximos días.
+  </p>
+  <div class="lead__details">
+    <p>
+      <b>Nombre del cliente: </b>
+      <%= @user.first_name %> <%= @user.last_name %>
+    </p>
+    <p>
+      <b>Celular: </b>
+      <%= @user.phone %>
+    </p>
+    <p>
+      <b>Correo electrónico: </b>
+      <%= @user.email %>
+    </p>
+  </div>
+</div>
