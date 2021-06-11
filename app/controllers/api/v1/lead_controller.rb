@@ -8,7 +8,7 @@ class Api::V1::LeadController < ApplicationController
         lead = Lead.new(project_id: params[:project_id], user_id: @client_lead.id)
 
         if lead.save
-            # TODO Email delivery
+            LeadMailer.delivery_lead_email(Project.find(params[:project_id]), @client_lead).deliver
             render json: lead, status: :ok
         else
             render json: { errors: lead.errors.messages }, status: :unprocessable_entity
