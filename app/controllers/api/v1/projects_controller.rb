@@ -28,7 +28,13 @@ class Api::V1::ProjectsController < ApplicationController
     def leads
         @project = Project.find_by_slug(params[:id])
         if @project
-            render json: @project.users_by_leads, status: :ok
+            @user_leads = []
+            @project.leads.each do |lead|
+                user = lead.user
+                user.created_at = lead.created_at
+                @user_leads.push(user)
+            end
+            render json: @user_leads, status: :ok
         else
             render json: { errors: 'Not Found' }, status: :unprocessable_entity
         end
